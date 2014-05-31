@@ -1,0 +1,35 @@
+{
+  "name": "leaflet.wfs-t",
+  "version": "0.0.0",
+  "description": "Leaflet plug-in for WFS Transactional (WFS-T) support",
+  "devDependencies": {
+    "jshint": "~2.3.0",
+    "uglify-js": "~2.4.3",    
+    "jake": "~0.7.4"    
+  },  
+  "dependencies": {
+    "leaflet": ">=0.7.3",
+    "leaflet-draw": "~0.2.3"
+  },
+  "main": "dist/leaflet.wfs-t.js",
+ "directories": {
+    "example": "examples"
+  },
+  "scripts": {
+    "build": "jake",
+    "test": "jake test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/flatrockgeo/leaflet.wfs-t.git"
+  },
+  "keywords": [
+    "Leaflet",
+    "WFS-T",
+    "GML"
+  ],
+  "author": "Michael Moore",
+  "license": "BSD",
+  "readmeFilename": "README.md",
+  "gitHead": "377ff4cfde124efebda281ace43b20ca8e4aa249"
+}
