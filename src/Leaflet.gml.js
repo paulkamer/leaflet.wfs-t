@@ -55,7 +55,7 @@ L.Marker.include({
     toGML: function () {
         var xml;
         xml = '<gml:Point srsName="EPSG:4326"><gml:coordinates cs="," decimal="." ts=" ">';
-        xml += this.getLatLng().lng + ',' + this.getLatLng().lat;
+        xml += this.getLatLng().lat + ',' + this.getLatLng().lng;
         xml += '</gml:coordinates></gml:Point>';
         return xml;
     }
