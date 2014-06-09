@@ -77,7 +77,6 @@ L.WFST = L.GeoJSON.extend({
     },
     wfstSave: function (layers, options) {
         options = options || {};
-        var realsuccess = options.success;
         layers = layers ? (L.Util.isArray(layers) ? layers : [layers]) : [];
 
         var v;
@@ -91,24 +90,24 @@ L.WFST = L.GeoJSON.extend({
             }
         }
     },
-    wfstTouch: function (layers, options) {
-        // Touch a file so it needs to be saved again
-        layers = layers ? (L.Util.isArray(layers) ? layers : [layers]) : [];
-        console.log("Save layers now!");
-
-        for (var i = 0, len = layers.length; i < len; i++) {
-            layers[i]._wfstSaved = false;
-        }
-    },
-    wfstSaveDirty: function (options) {
-        for (var i in self._layers) {
-            if (typeof self._layers[i].feature._wfstSaved === 'undefined') {
-                this._wfstAdd(self._layers[i], options);
-            } else if (self._layers[i].feature._wfstSaved === false) {
-                this._wfstSave(self._layers[i], options);
-            }
-        }
-    },
+//    wfstTouch: function (layers, options) {
+//        // Touch a file so it needs to be saved again
+//        layers = layers ? (L.Util.isArray(layers) ? layers : [layers]) : [];
+//        console.log("Save layers now!");
+//
+//        for (var i = 0, len = layers.length; i < len; i++) {
+//            layers[i]._wfstSaved = false;
+//        }
+//    },
+//    wfstSaveDirty: function (options) {
+//        for (var i in self._layers) {
+//            if (typeof self._layers[i].feature._wfstSaved === 'undefined') {
+//                this._wfstAdd(self._layers[i], options);
+//            } else if (self._layers[i].feature._wfstSaved === false) {
+//                this._wfstSave(self._layers[i], options);
+//            }
+//        }
+//    },
 
 
     // WFST Private functions
@@ -117,6 +116,8 @@ L.WFST = L.GeoJSON.extend({
     // Add a single layer with WFS-T
     _wfstAdd: function (layer, options) {
 
+        var that = this;
+        
         if (typeof layer.feature !== 'undefined' &&
             typeof layer.feature._wfstSaved === 'boolean' &&
         layer.feature._wfstSaved) {
@@ -130,16 +131,16 @@ L.WFST = L.GeoJSON.extend({
 
         options = L.extend(options, {
             success: function (res) {
-                var xml = self._wfstSuccess(res);
+                var xml = that._wfstSuccess(res);
                 if (typeof realsuccess === 'function' && xml !== false) {
                     layer.feature = layer.feature || {};
                     layer.feature._wfstSaved = true;
 
                     // Populate the IDs of the object we just inserted.
                     // Since we do one insert at a time, it should always be object 0
-                    var fid = self._getElementsByTagName(xml, 'ogc:FeatureId')[0].getAttribute('fid');
+                    var fid = that._getElementsByTagName(xml, 'ogc:FeatureId')[0].getAttribute('fid');
                     layer.feature.id = fid;
-                    layer.feature.properties[self.options.primaryKeyField] = fid.replace(self.options.featureType + '.', '');
+                    layer.feature.properties[that.options.primaryKeyField] = fid.replace(that.options.featureType + '.', '');
 
                     realsuccess(res);
                 } else if (typeof options.failure === 'function') {
@@ -162,6 +163,8 @@ L.WFST = L.GeoJSON.extend({
 
     // Remove a layers with WFS-T
     _wfstRemove: function (layer, options) {
+        var that = this;
+
         if (typeof this.options.primaryKeyField === 'undefined' && typeof options.where === 'undefined') {
             console.log("I can't do deletes without a primaryKeyField!");
             if (typeof options.failure === 'function') {
@@ -177,7 +180,7 @@ L.WFST = L.GeoJSON.extend({
 
         options = L.extend(options, {
             success: function (res) {
-                if (typeof realsuccess === 'function' && self._wfstSuccess(res)) {
+                if (typeof realsuccess === 'function' && that._wfstSuccess(res)) {
                     if (layer !== null) {
                         layer.feature = layer.feature || {};
                         layer.feature._wfstSaved = true;
@@ -209,6 +212,8 @@ L.WFST = L.GeoJSON.extend({
 
     //  Save changes to a single layer with WFS-T
     _wfstSave: function (layer, options) {
+        var that = this;
+
         if (typeof this.options.primaryKeyField === 'undefined') {
             console.log("I can't do saves without a primaryKeyField!");
             if (typeof options.failure === 'function') {
@@ -226,7 +231,7 @@ L.WFST = L.GeoJSON.extend({
 
         options = L.extend(options, {
             success: function (res) {
-                if (typeof realsuccess === 'function' && self._wfstSuccess(res)) {
+                if (typeof realsuccess === 'function' && that._wfstSuccess(res)) {
                     layer.feature._wfstSaved = true;
                     realsuccess(res);
                 } else if (typeof options.failure === 'function') {
@@ -370,7 +375,6 @@ L.WFST = L.GeoJSON.extend({
             url: this.options.url
         }, options);
 
-        self = this;
         var xmlhttpreq = (window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP'));
         xmlhttpreq.onreadystatechange = function () {
             if (xmlhttpreq.readyState === 4) {
@@ -455,7 +459,7 @@ L.WFST = L.GeoJSON.extend({
     },
 
     // A compatibility layer because browsers argue about the right way to do getElementsByTagName when namespaces are involved
-    _getElementsByTagName : function (xml, name) {
+    _getElementsByTagName: function (xml, name) {
         var tag = xml.getElementsByTagName(name);
         if (!tag || tag === null || tag.length === 0) {
             tag = xml.getElementsByTagName(name.replace(/.*:/, ''));
@@ -474,7 +478,6 @@ L.WFST = L.GeoJSON.extend({
         var elems = this._getElementsByTagName(seq, this.options.xsdNs + ':element');
         var found = [];
 
-        var foundVal;
         for (var e = 0;e < elems.length;e++) {
             if (typeof attribute === 'undefined') {
                 found.push(elems[e]);
@@ -492,11 +495,11 @@ L.WFST = L.GeoJSON.extend({
     // Because with WFS-T even success can be failure
     _wfstSuccess: function (xml) {
         if (typeof xml === 'string') {
-            xml = self._parseXml(xml);
+            xml = this._parseXml(xml);
         }
-        var exception = self._getElementsByTagName(xml, 'ows:ExceptionReport');
+        var exception = this._getElementsByTagName(xml, 'ows:ExceptionReport');
         if (exception.length > 0) {
-            console.log(self._getElementsByTagName(xml, 'ows:ExceptionText')[0].firstChild.nodeValue);
+            console.log(this._getElementsByTagName(xml, 'ows:ExceptionText')[0].firstChild.nodeValue);
             return false;
         }
         return xml;
