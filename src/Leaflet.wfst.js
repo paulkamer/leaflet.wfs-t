@@ -325,11 +325,11 @@ L.WFST = L.GeoJSON.extend({
         }
 
         // Only require a geometry field if it looks like we have geometry but we aren't trying to save it
-        if(
-            (layer.hasOwnProperty('x') && layer.hasOwnProperty('y') && typeof layer.x != 'undefined' && typeof layer.y != 'undefined') ||
+        if (
+            (layer.hasOwnProperty('x') && layer.hasOwnProperty('y') && typeof layer.x !== 'undefined' && typeof layer.y !== 'undefined') ||
             (layer.hasOwnProperty('_latlng') && Object.keys(layer._latlng).length > 0)
-        ){
-            if(this.options.geomField || geomFields.length === 1){
+        ) {
+            if (this.options.geomField || geomFields.length === 1) {
                 this.options.geomField = this.options.geomField || geomFields[0].getAttribute('name');
                 field[this.options.geomField] = layer.toGML();
             } else {
@@ -341,13 +341,13 @@ L.WFST = L.GeoJSON.extend({
         return field;
     },
     // Make WFS-T filters for deleting/updating specific items
-    _whereFilter: function(where){
+    _whereFilter: function (where) {
         var xml = '<ogc:Filter xmlns:ogc="http://www.opengis.net/ogc">';
-        for(var propertyName in where){
+        for (var propertyName in where) {
             xml += '<ogc:PropertyIsEqualTo>';
             xml += '<ogc:PropertyName>' + propertyName + '</ogc:PropertyName>';
             xml += '<ogc:Literal>' + where[propertyName] + '</ogc:Literal>';
-            xml += '</ogc:PropertyIsEqualTo>'; 
+            xml += '</ogc:PropertyIsEqualTo>';
         }
         xml += '</ogc:Filter>';
         return xml;
@@ -387,7 +387,7 @@ L.WFST = L.GeoJSON.extend({
     /*
     Get all existing objects from the WFS service and draw them
     */
-    _loadExistingFeatures: function(){
+    _loadExistingFeatures: function () {
         var geoJsonUrl = this.options.url + '?service=WFS&version=' + this.options.version + '&request=GetFeature&typeName=' + this.options.featureNS + ':' + this.options.featureType + '&outputFormat=application/json';
         this._ajax({
             url: geoJsonUrl,
@@ -403,7 +403,7 @@ L.WFST = L.GeoJSON.extend({
     /*
     Get the feature description
     */
-    _loadFeatureDescription: function(){
+    _loadFeatureDescription: function () {
         var describeFeatureUrl = this.options.url + '?service=WFS&version=' + this.options.version + '&request=DescribeFeatureType&typename=' + this.options.featureNS + ':' + this.options.featureType;
         this._ajax({
             url: describeFeatureUrl,
@@ -442,7 +442,7 @@ L.WFST = L.GeoJSON.extend({
 
         var _xmlpre = '';
         _xmlpre = '';
-        _xmlpre += '<wfs:Transaction service="WFS" version="' + this.options.version + '"'; 
+        _xmlpre += '<wfs:Transaction service="WFS" version="' + this.options.version + '"';
         _xmlpre += ' xmlns:wfs="http://www.opengis.net/wfs"';
         _xmlpre += ' xmlns:gml="http://www.opengis.net/gml"';
         _xmlpre += ' xmlns:' + this.options.featureNS + '="' + this._getElementsByTagName(this.options.featureinfo, this.options.xsdNs + ':schema')[0].getAttribute('targetNamespace') + '"';
@@ -466,9 +466,9 @@ L.WFST = L.GeoJSON.extend({
         return tag;
     },
 
-    _fieldsByAttribute: function(attribute, value, max) {
+    _fieldsByAttribute: function (attribute, value, max) {
         var seq = this._getElementsByTagName(this.options.featureinfo, this.options.xsdNs + ':sequence')[0];
-        if(typeof seq === 'undefined'){
+        if (typeof seq === 'undefined') {
             return [];
         }
         var elems = this._getElementsByTagName(seq, this.options.xsdNs + ':element');
