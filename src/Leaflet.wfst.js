@@ -310,7 +310,7 @@ L.WFST = L.GeoJSON.extend({
                     // At the very least Geoserver isn't liking null where a date should be.
                 }
             } else if (
-                elems[p].getAttribute('type') === 'gml:GeometryPropertyType' ||
+                elems[p].getAttribute('type') === 'gml:PointPropertyType' ||
                 elems[p].getAttribute('type') === 'gml:GeometryPropertyType' ||
                 elems[p].getAttribute('type') === 'gml:MultiSurfacePropertyType' ||
                 elems[p].getAttribute('type') === 'gml:SurfacePropertyType'
