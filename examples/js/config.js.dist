@@ -1,0 +1,25 @@
+var example_config = {
+    map: {
+      view: { 
+          center: [0, 0],  
+          zoom: 2,
+          options: { }
+      }
+    },
+
+    wms: {
+        url: "/geoserver/wfsttest/wms",
+        layers: 'wfsttest:world',
+        format: 'image/png',
+        transparent: true,
+        attribution: "CDC",
+        noWrap: true
+    },
+
+    wfst: {
+        url: '/geoserver/wfsttest/wfs',
+        featureNS: 'wfsttest',
+        featureType: 'doodles',
+        primaryKeyField: 'id'
+    }
+}

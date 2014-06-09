@@ -1,0 +1,31 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>WFS-T Leaflet Plugin</title>
+
+        <!-- Leaflet 0.7.3 CSS/JS from CDN -->
+        <link type="text/css" rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
+        <script type="text/javascript" src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+
+        <!-- Leaflet.draw plugin. Install with 'npm install' -->
+        <link type="text/css" rel="stylesheet" href="/node_modules/leaflet-draw/dist/leaflet.draw.css" />
+        <script type="text/javascript" src="/node_modules/leaflet-draw/dist/leaflet.draw.js"></script>
+
+        <!-- Leaflet.wfst itself -->
+        <script type="text/javascript" src="/dist/leaflet.wfst-src.js"></script>
+
+
+        <!-- css and js for demo -->
+        <link type="text/css" rel="stylesheet" href="/examples/css/map.css" />
+        <script type="text/javascript" src="/examples/js/config.js"></script>
+        <script type="text/javascript" src="/examples/js/map.js"></script>
+    </head>
+    <body>
+        <div id="map"></div>
+        <script type="text/javascript">
+            // Load the map with the initMap function in map.js
+            initMap( example_config );
+        </script>
+    </body>
+</html>

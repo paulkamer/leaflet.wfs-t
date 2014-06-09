@@ -2,28 +2,16 @@ var map; // the map object
 var layers = {};
 var drawControl;
 
-function initMap(){
+function initMap( config ){
     // create a map in the "map" div, set the view to a given place and zoom
-    map = L.map('map').setView([0,0], 2);
+    map = L.map('map', config.map.options).setView(config.map.view.center, config.map.view.zoom);
 
     // Set the map background to our WMS layer of the world boundaries
     // Replace this with your own background layer
-    layers.world = L.tileLayer.wms("/geoserver/wfsttest/wms", {
-        layers: 'wfsttest:world',
-        format: 'image/png',
-        transparent: true,
-        attribution: "CDC",
-        noWrap: true
-    }).addTo(map);
+    layers.world = L.tileLayer.wms( config.wms.url, config.wms).addTo(map);
 
     // Initialize the WFST layer 
-    layers.drawnItems = L.wfst(null,{
-        // Required
-        url : '/geoserver/wfsttest/wfs',
-        featureNS : 'wfsttest',
-        featureType : 'doodles',
-        primaryKeyField: 'id'
-    }).addTo(map);
+    layers.drawnItems = L.wfst(null, config.wfst).addTo(map);
 
     // Initialize the draw control and pass it the FeatureGroup of editable layers
     var drawControl = new L.Control.Draw({
