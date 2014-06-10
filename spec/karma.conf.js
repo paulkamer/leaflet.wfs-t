@@ -15,7 +15,7 @@ module.exports = function(config) {
     }
 
 
-    var files = [ ].concat(leafletSources,leafletDrawSources, libSources, ["spec/suites/**/*.js"]);
+    var files = ['examples/js/config.js.dist' ].concat(leafletSources,leafletDrawSources, libSources, ["spec/suites/**/*.js"]);
 
     config.set({
 

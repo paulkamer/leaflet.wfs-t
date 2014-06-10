@@ -9,7 +9,8 @@ L.WFST = L.GeoJSON.extend({
             showExisting: true,         // Show existing features in WFST layer on map?
             version: "1.1.0",           // WFS version
             failure: function (msg) { console.log(msg); },    // Function for handling initialization failures
-            xsdNs: 'xsd'
+            xsdNs: 'xsd',
+            loadFeatureDescription: true
             // geomField : <field_name> // The geometry field to use. Auto-detected if only one geom field
             // url: <WFS service URL>
             // featureNS: <Feature NameSpace>
@@ -31,7 +32,10 @@ L.WFST = L.GeoJSON.extend({
         if (this.options.showExisting) {
             this._loadExistingFeatures();
         }
-        this._loadFeatureDescription();
+        
+        if (this.options.loadFeatureDescription) {
+            this._loadFeatureDescription();
+        }
     },
     // Additional functionality for these functions
     addLayer: function (layer, options) {
